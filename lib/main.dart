@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:torch_light/torch_light.dart';
+import 'dart:developer';
 
 void main() => runApp(const MyApp());
 
@@ -36,6 +38,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Translate',
+              ),
+            ),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary:  const Color.fromRGBO(255, 160, 51, 1),
@@ -44,7 +55,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 fontSize: 30,
                 fontWeight: FontWeight.bold)
             ),
-            onPressed: () {},
+            onPressed: () async {_enableTorch(context);},
             child: const Text('Torch'),
           ),
           const SizedBox(height: 30),
@@ -74,6 +85,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ],
       ),
     );
+  }
+}
+
+Future<void> _enableTorch(BuildContext context) async {
+  try {
+    await TorchLight.enableTorch();
+  } on Exception catch (_) {
+    log("error");
   }
 }
 

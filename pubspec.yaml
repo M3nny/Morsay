@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_drawing_board: 0.2.7
+  torch_light: ^0.4.0
 
 
   # The following adds the Cupertino Icons font to your application.
