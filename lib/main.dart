@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:torch_light/torch_light.dart';
 import 'dart:developer';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 
+// inserito il testo ritorna la conversione in morse
+// fare due pagine con indice sotto con pallino e linea (la linea nella pagina dove si è al momento quando si cambia la linea diventa un punto)
+// fare bottoni che inseriscono in automatico punti e linee
+// manuale per il morse dove c'è una guida lettera per lettera
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -32,7 +37,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style =
-    ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
     return Center(
       child: Column(
@@ -49,36 +54,37 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary:  const Color.fromRGBO(255, 160, 51, 1),
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-              textStyle: const TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold)
-            ),
-            onPressed: () async {_enableTorch(context);},
+                primary: const Color.fromRGBO(255, 160, 51, 1),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              _enableTorch(context);
+            },
             child: const Text('Torch'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary:  const Color.fromRGBO(203, 96, 204, 1),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                textStyle: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold)
-            ),
-            onPressed: () {},
+                primary: const Color.fromRGBO(203, 96, 204, 1),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Vibrate.vibrate();
+            },
             child: const Text('Vibration'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary:  const Color.fromRGBO(96, 254, 213, 1),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                textStyle: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold)
-            ),
+                primary: const Color.fromRGBO(96, 254, 213, 1),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
             onPressed: () {},
             child: const Text('Signal'),
           ),
@@ -95,4 +101,3 @@ Future<void> _enableTorch(BuildContext context) async {
     log("error");
   }
 }
-
