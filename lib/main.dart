@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audio_cache.dart';
+import 'package:flashlight/flashlight.dart';
 
 void main() => runApp(const Human2Morse());
 
@@ -37,6 +38,18 @@ class Human2Morse extends StatelessWidget {
                     onPressed: () {
                       final player = AudioCache();
                       player.play('audio/dash.mp3');
+                    },
+                  ),
+                  ElevatedButton(
+                    child: const Text('Torch on'),
+                    onPressed: () {
+                      Flashlight.lightOn();
+                    },
+                  ),
+                  ElevatedButton(
+                    child: const Text('Torch off'),
+                    onPressed: () {
+                      Flashlight.lightOff();
                     },
                   ),
                 ],
