@@ -1,103 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:torch_light/torch_light.dart';
-import 'dart:developer';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:vibration/vibration.dart';
+import 'package:audioplayers/audio_cache.dart';
 
-// inserito il testo ritorna la conversione in morse
-// fare due pagine con indice sotto con pallino e linea (la linea nella pagina dove si è al momento quando si cambia la linea diventa un punto)
-// fare bottoni che inseriscono in automatico punti e linee
-// manuale per il morse dove c'è una guida lettera per lettera
-void main() => runApp(const MyApp());
+void main() => runApp(const Human2Morse());
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  static const String _title = 'Human to Morse';
+class Human2Morse extends StatelessWidget {
+  const Human2Morse({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: _title,
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
-        body: const MyStatefulWidget(),
-      ),
-    );
-  }
-}
-
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
-
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  @override
-  Widget build(BuildContext context) {
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Translate',
+        appBar: AppBar(
+          title: const Text('Human to morse'),
+        ),
+        body: Builder(
+          builder: (BuildContext context) {
+            return Center(
+              child: Column(
+                children: <Widget>[
+                  ElevatedButton(
+                    child: const Text('Vibrate'),
+                    onPressed: () {
+                      Vibration.vibrate();
+                    },
+                  ),
+                  ElevatedButton(
+                    child: const Text('Dot'),
+                    onPressed: () {
+                      final player = AudioCache();
+                      player.play('audio/dot.mp3');
+                    },
+                  ),
+                  ElevatedButton(
+                    child: const Text('Dash'),
+                    onPressed: () {
+                      final player = AudioCache();
+                      player.play('audio/dash.mp3');
+                    },
+                  ),
+                ],
               ),
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: const Color.fromRGBO(255, 160, 51, 1),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                textStyle:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-            onPressed: () async {
-              _enableTorch(context);
-            },
-            child: const Text('Torch'),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: const Color.fromRGBO(203, 96, 204, 1),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                textStyle:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Vibrate.vibrate();
-            },
-            child: const Text('Vibration'),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: const Color.fromRGBO(96, 254, 213, 1),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                textStyle:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-            onPressed: () {},
-            child: const Text('Signal'),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
-  }
-}
-
-Future<void> _enableTorch(BuildContext context) async {
-  try {
-    await TorchLight.enableTorch();
-  } on Exception catch (_) {
-    log("error");
   }
 }
