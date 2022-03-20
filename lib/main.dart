@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 void main() => runApp(Human2Morse());
 
 String latin = "";
-List<String> alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "l", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " ", "\n"];
+List<String> alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " ", "\n"];
 List<String> morseList = [".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/", "\n"];
 
 // ignore: must_be_immutable
@@ -38,9 +38,9 @@ class Human2Morse extends StatelessWidget {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.grey[300]),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            Colors.grey[300]
+                          ),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
@@ -71,9 +71,9 @@ class Human2Morse extends StatelessWidget {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.grey[300]),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            Colors.grey[300]
+                          ),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
@@ -104,9 +104,9 @@ class Human2Morse extends StatelessWidget {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.grey[300]),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            Colors.grey[300]
+                          ),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
@@ -184,7 +184,8 @@ String latinToMorse(String latin){
               onChanged: updateText,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10)
+                ),
                 //hintText: "translate from human",
                 fillColor: Color(0xffD8D8D8),
                 filled: true,
@@ -218,7 +219,8 @@ String latinToMorse(String latin){
               controller: TextEditingController(text: actualMorse),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10)
+                ),
                 //hintText: "translate from human",
                 fillColor: Color(0xffD8D8D8),
                 filled: true,
