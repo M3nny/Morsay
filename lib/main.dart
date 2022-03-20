@@ -9,16 +9,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 void main() => runApp(Human2Morse());
 
 String latin = "";
-List<String> alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "l", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " "];
-List<String> morseList = [".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/"];
+List<String> alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "l", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " ", "\n"];
+List<String> morseList = [".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/", "\n"];
 
 // ignore: must_be_immutable
 class Human2Morse extends StatelessWidget {
   const Human2Morse({Key key}) : super(key: key);
-
-  void updateText(String newText){
-    latin = newText;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,40 +23,8 @@ class Human2Morse extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                margin: EdgeInsets.only(top: 50),
-                width: 380,
-                child: TextField(
-                  maxLines: 5,
-                  onChanged: updateText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    //hintText: "translate from human",
-                    fillColor: Color(0xffD8D8D8),
-                    filled: true,
-                  ),
-                ),
-              ),
-            ),
 
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                margin: EdgeInsets.only(top: 30),
-                width: 380,
-                child: SvgPicture.asset(
-                  "assets/images/swap.svg",
-                  width: 100,
-                  height: 100,
-                  color: Color(0xff969696),
-                ),
-              ),
-            ),
-
-            MorseField(),
+            Translator(),
 
             Row(
               children: [
@@ -171,15 +135,22 @@ class Human2Morse extends StatelessWidget {
   }
 }
 
-class MorseField extends StatefulWidget {
-  const MorseField({Key key }) : super(key: key);
+class Translator extends StatefulWidget {
+  const Translator({Key key }) : super(key: key);
 
   @override
-  State<MorseField> createState() => _MorseFieldState();
+  State<Translator> createState() => _TranslatorState();
 }
-class _MorseFieldState extends State<MorseField> {
 
+class _TranslatorState extends State<Translator> {
   String actualMorse = "";
+
+  // every time the text changes update the variable and call the method to update the morse textField
+  void updateText(String newText){
+    latin = newText;
+    updateMorse();
+  }
+
   void updateMorse(){
     setState((){
       actualMorse = latinToMorse(latin);
@@ -190,36 +161,72 @@ String latinToMorse(String latin){
   String result = "";
 
   for(int i = 0; i < latin.length; i++){
-        for(int j = 0; j < alphabet.length; j++){
-            if(latin[i].toUpperCase() == alphabet[j]){
-                result = result + " " + morseList[j];
-            }
-        }
+    for(int j = 0; j < alphabet.length; j++){
+      if(latin[i].toUpperCase() == alphabet[j]){
+        result = result + " " + morseList[j];
+      }
     }
-    return result;
+  }
+  return result;
 }
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        margin: EdgeInsets.only(top: 50),
-        width: 380,
-        child: TextField(
-          maxLines: 5,
-          onTap: updateMorse,
-          readOnly: true,
-          controller: TextEditingController(text: actualMorse),
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10)),
-            //hintText: "translate from human",
-            fillColor: Color(0xffD8D8D8),
-            filled: true,
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            margin: EdgeInsets.only(top: 50),
+            width: 380,
+            child: TextField(
+              maxLines: 5,
+              onChanged: updateText,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10)),
+                //hintText: "translate from human",
+                fillColor: Color(0xffD8D8D8),
+                filled: true,
+              ),
+            ),
           ),
         ),
-      ),
+
+        Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            margin: EdgeInsets.only(top: 30),
+            width: 380,
+            child: SvgPicture.asset(
+              "assets/images/swap.svg",
+              width: 100,
+              height: 100,
+              color: Color(0xff969696),
+            ),
+          ),
+        ), 
+
+        Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            margin: EdgeInsets.only(top: 50),
+            width: 380,
+            child: TextField(
+              maxLines: 5,
+              readOnly: true,
+              controller: TextEditingController(text: actualMorse),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10)),
+                //hintText: "translate from human",
+                fillColor: Color(0xffD8D8D8),
+                filled: true,
+              ),
+            ),
+          ),
+        ),
+      ]
     );
   }
 }
