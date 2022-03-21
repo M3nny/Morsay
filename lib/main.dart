@@ -77,6 +77,7 @@ class Human2Morse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(scaffoldBackgroundColor: const Color(0xff1E1E2E)),
       home: Scaffold(
         resizeToAvoidBottomInset: false,
