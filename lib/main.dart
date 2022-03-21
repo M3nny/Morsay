@@ -6,6 +6,7 @@ import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flashlight/flashlight.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(Human2Morse());
 
@@ -75,53 +76,73 @@ List<String> morseList = [
 int dot = 200;
 int dash = dot * 3;
 int simbol = dot; //space between dot or dash
-int letter = dash;  //space between letters
+int letter = dash; //space between letters
 int word = dot * 7; //space between words
 
 // ignore: must_be_immutable
 class Human2Morse extends StatelessWidget {
   const Human2Morse({Key key}) : super(key: key);
 
-  void mediaTranslation (String type) {
+  void mediaTranslation(String type) {
     final pattern = <int>[];
     String tempMorse = "%" + actualMorse + "%";
-      // building the pattern
-      for (int i = 1; i < tempMorse.length - 1; i++) {
-        switch (tempMorse[i]) {
-          case ".": {  pattern.add(dot); if (tempMorse[i + 1] != " ") {pattern.add(simbol);} }
+    // building the pattern
+    for (int i = 1; i < tempMorse.length - 1; i++) {
+      switch (tempMorse[i]) {
+        case ".":
+          {
+            pattern.add(dot);
+            if (tempMorse[i + 1] != " ") {
+              pattern.add(simbol);
+            }
+          }
           break;
 
-          case "-": {  pattern.add(dash);if (tempMorse[i + 1] != " ") {pattern.add(simbol);} }
+        case "-":
+          {
+            pattern.add(dash);
+            if (tempMorse[i + 1] != " ") {
+              pattern.add(simbol);
+            }
+          }
           break;
 
-          case "/": {  pattern.add(word); }
+        case "/":
+          {
+            pattern.add(word);
+          }
           break;
 
-          case " ": {  if (tempMorse[i + 1] != "/" && tempMorse[i - 1] != "/") {pattern.add(letter);} }
+        case " ":
+          {
+            if (tempMorse[i + 1] != "/" && tempMorse[i - 1] != "/") {
+              pattern.add(letter);
+            }
+          }
           break;
 
-          default: { pattern.add(word); }
+        default:
+          {
+            pattern.add(word);
+          }
           break;
-        } 
-      } 
+      }
+    }
 
-    if(pattern.isNotEmpty) {
+    if (pattern.isNotEmpty) {
       if (type == "vibration") {
         Vibration.vibrate(pattern: pattern);
-      }
-
-      else if (type == "flash") {
+      } else if (type == "flash") {
         morseToTorchligth(pattern);
       }
     }
   }
 
-  void morseToTorchligth (pattern) {
-    for (int i = 0; i < pattern.length; i++){
+  void morseToTorchligth(pattern) {
+    for (int i = 0; i < pattern.length; i++) {
       if (i % 2 == 0) {
         sleep(Duration(milliseconds: pattern[i]));
-      }
-      else {
+      } else {
         Flashlight.lightOn();
         sleep(Duration(milliseconds: pattern[i]));
         Flashlight.lightOff();
@@ -145,7 +166,7 @@ class Human2Morse extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Container(
-                      margin: EdgeInsets.only(top: 150),
+                      margin: EdgeInsets.only(top: 170),
                       width: 80,
                       height: 80,
                       child: ElevatedButton(
@@ -178,7 +199,7 @@ class Human2Morse extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Container(
-                      margin: EdgeInsets.only(top: 150),
+                      margin: EdgeInsets.only(top: 170),
                       width: 80,
                       height: 80,
                       child: ElevatedButton(
@@ -211,7 +232,7 @@ class Human2Morse extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Container(
-                      margin: EdgeInsets.only(top: 150),
+                      margin: EdgeInsets.only(top: 170),
                       width: 80,
                       height: 80,
                       child: ElevatedButton(
@@ -257,7 +278,6 @@ class Translator extends StatefulWidget {
 }
 
 class _TranslatorState extends State<Translator> {
-
   // every time the text changes update the variable and call the method to update the morse textField
   void updateText(String newText) {
     latin = newText;
@@ -285,6 +305,9 @@ class _TranslatorState extends State<Translator> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Column(children: [
       Align(
         alignment: Alignment.topCenter,
@@ -349,6 +372,32 @@ class _TranslatorState extends State<Translator> {
               //hintText: "translate from human",
               fillColor: Color(0xff302D41),
               filled: true,
+
+              suffixIcon: Container(
+                margin: EdgeInsets.only(right: 10, top: 80),
+                width: 50,
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xff575268)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                    elevation: MaterialStateProperty.all<double>(0),
+                  ),
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: actualMorse));
+                  },
+                  child: SvgPicture.asset(
+                    "assets/images/copy.svg",
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
