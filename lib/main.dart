@@ -75,9 +75,9 @@ List<String> morseList = [
 
 int dot = 200;
 int dash = dot * 3;
-int simbol = dot; //space between dot or dash
-int letter = dash; //space between letters
-int word = dot * 7; //space between words
+int simbol = dot; // space between dot or dash
+int letter = dash; // space between letters
+int word = dot * 7; // space between words
 
 // ignore: must_be_immutable
 class Human2Morse extends StatelessWidget {
@@ -134,6 +134,8 @@ class Human2Morse extends StatelessWidget {
         Vibration.vibrate(pattern: pattern);
       } else if (type == "flash") {
         morseToTorchligth(pattern);
+      } else if (type == "sound") {
+        morseToSound(pattern);
       }
     }
   }
@@ -146,6 +148,21 @@ class Human2Morse extends StatelessWidget {
         Flashlight.lightOn();
         sleep(Duration(milliseconds: pattern[i]));
         Flashlight.lightOff();
+      }
+    }
+  }
+
+  Future<void> morseToSound (pattern) async {
+    final player = AudioCache();
+    for (int i = 0; i < pattern.length; i++) {
+      if (i % 2 == 0) {
+        await Future.delayed(Duration(milliseconds: pattern[i]));
+      } else{
+        if (pattern[i] == dot) {
+          player.play('audio/dot.mp3');
+        } else if (pattern[i] == dash) {
+          player.play('audio/dash.mp3');
+        }
       }
     }
   }
@@ -247,7 +264,7 @@ class Human2Morse extends StatelessWidget {
                           ),
                           elevation: MaterialStateProperty.all<double>(0),
                         ),
-                        onPressed: () {},
+                        onPressed: () => mediaTranslation("sound"),
                         child: SizedBox(
                           width: 380,
                           child: SvgPicture.asset(
