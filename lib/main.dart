@@ -140,13 +140,13 @@ class Human2Morse extends StatelessWidget {
     }
   }
 
-  void morseToTorchligth(pattern) {
+  Future<void> morseToTorchligth(pattern) async {
     for (int i = 0; i < pattern.length; i++) {
       if (i % 2 == 0) {
-        sleep(Duration(milliseconds: pattern[i]));
+        await Future.delayed(Duration(milliseconds: pattern[i]));
       } else {
         Flashlight.lightOn();
-        sleep(Duration(milliseconds: pattern[i]));
+        await Future.delayed(Duration(milliseconds: pattern[i]));
         Flashlight.lightOff();
       }
     }
