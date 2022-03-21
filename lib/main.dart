@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -152,12 +151,12 @@ class Human2Morse extends StatelessWidget {
     }
   }
 
-  Future<void> morseToSound (pattern) async {
+  Future<void> morseToSound(pattern) async {
     final player = AudioCache();
     for (int i = 0; i < pattern.length; i++) {
       if (i % 2 == 0) {
         await Future.delayed(Duration(milliseconds: pattern[i]));
-      } else{
+      } else {
         if (pattern[i] == dot) {
           player.play('audio/dot.mp3');
         } else if (pattern[i] == dash) {
