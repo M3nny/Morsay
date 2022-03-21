@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 void main() => runApp(Human2Morse());
 
 String latin = "";
+String actualMorse = "";
 List<String> alphabet = [
   "A",
   "B",
@@ -70,9 +71,43 @@ List<String> morseList = [
   "\n"
 ];
 
+int dot = 200;
+int dash = dot * 3;
+int simbol = dot; //space between dot or dash
+int letter = dash;  //space between letters
+int word = dot * 7; //space between words
+
 // ignore: must_be_immutable
 class Human2Morse extends StatelessWidget {
   const Human2Morse({Key key}) : super(key: key);
+
+  void morseToVibration(){
+    final pattern = <int>[];
+    String tempMorse = "%" + actualMorse + "%";
+      //building the pattern
+      for(int i = 1; i < tempMorse.length - 1; i++){
+        switch(tempMorse[i]) {
+          case ".": {  pattern.add(dot); if(tempMorse[i + 1] != " "){pattern.add(simbol);} }
+          break;
+
+          case "-": {  pattern.add(dash);if(tempMorse[i + 1] != " "){pattern.add(simbol);} }
+          break;
+
+          case "/": {  pattern.add(word); }
+          break;
+
+          case " ": {  if(tempMorse[i + 1] != "/" && tempMorse[i - 1] != "/"){pattern.add(letter);} }
+          break;
+
+          default: { pattern.add(word); }
+          break;
+        } 
+      } 
+
+    if(pattern.isNotEmpty){
+      Vibration.vibrate(pattern: pattern);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +173,7 @@ class Human2Morse extends StatelessWidget {
                           ),
                           elevation: MaterialStateProperty.all<double>(0),
                         ),
-                        onPressed: () {},
+                        onPressed: morseToVibration,
                         child: SizedBox(
                           width: 380,
                           child: SvgPicture.asset(
@@ -202,7 +237,6 @@ class Translator extends StatefulWidget {
 }
 
 class _TranslatorState extends State<Translator> {
-  String actualMorse = "";
 
   // every time the text changes update the variable and call the method to update the morse textField
   void updateText(String newText) {
