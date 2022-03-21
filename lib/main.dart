@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -81,22 +82,22 @@ int word = dot * 7; //space between words
 class Human2Morse extends StatelessWidget {
   const Human2Morse({Key key}) : super(key: key);
 
-  void morseToVibration(){
+  void mediaTranslation (String type) {
     final pattern = <int>[];
     String tempMorse = "%" + actualMorse + "%";
-      //building the pattern
-      for(int i = 1; i < tempMorse.length - 1; i++){
-        switch(tempMorse[i]) {
-          case ".": {  pattern.add(dot); if(tempMorse[i + 1] != " "){pattern.add(simbol);} }
+      // building the pattern
+      for (int i = 1; i < tempMorse.length - 1; i++) {
+        switch (tempMorse[i]) {
+          case ".": {  pattern.add(dot); if (tempMorse[i + 1] != " ") {pattern.add(simbol);} }
           break;
 
-          case "-": {  pattern.add(dash);if(tempMorse[i + 1] != " "){pattern.add(simbol);} }
+          case "-": {  pattern.add(dash);if (tempMorse[i + 1] != " ") {pattern.add(simbol);} }
           break;
 
           case "/": {  pattern.add(word); }
           break;
 
-          case " ": {  if(tempMorse[i + 1] != "/" && tempMorse[i - 1] != "/"){pattern.add(letter);} }
+          case " ": {  if (tempMorse[i + 1] != "/" && tempMorse[i - 1] != "/") {pattern.add(letter);} }
           break;
 
           default: { pattern.add(word); }
@@ -104,8 +105,27 @@ class Human2Morse extends StatelessWidget {
         } 
       } 
 
-    if(pattern.isNotEmpty){
-      Vibration.vibrate(pattern: pattern);
+    if(pattern.isNotEmpty) {
+      if (type == "vibration") {
+        Vibration.vibrate(pattern: pattern);
+      }
+
+      else if (type == "flash") {
+        morseToTorchligth(pattern);
+      }
+    }
+  }
+
+  void morseToTorchligth (pattern) {
+    for (int i = 0; i < pattern.length; i++){
+      if (i % 2 == 0) {
+        sleep(Duration(milliseconds: pattern[i]));
+      }
+      else {
+        Flashlight.lightOn();
+        sleep(Duration(milliseconds: pattern[i]));
+        Flashlight.lightOff();
+      }
     }
   }
 
@@ -140,7 +160,7 @@ class Human2Morse extends StatelessWidget {
                           ),
                           elevation: MaterialStateProperty.all<double>(0),
                         ),
-                        onPressed: () {},
+                        onPressed: () => mediaTranslation("flash"),
                         child: SizedBox(
                           width: 380,
                           child: SvgPicture.asset(
@@ -173,7 +193,7 @@ class Human2Morse extends StatelessWidget {
                           ),
                           elevation: MaterialStateProperty.all<double>(0),
                         ),
-                        onPressed: morseToVibration,
+                        onPressed: () => mediaTranslation("vibration"),
                         child: SizedBox(
                           width: 380,
                           child: SvgPicture.asset(
