@@ -339,13 +339,12 @@ class _TranslatorState extends State<Translator> {
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(color: Color(0xff302D41))),
-
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: Color(0xffD9E0EE), width: 2.0),
               ),
-
-              //hintText: "translate from human",
+              hintText: "Type something...",
+              hintStyle: TextStyle(color: Color(0xff6e6c7e)),
               fillColor: Color(0xff302D41),
               filled: true,
             ),
@@ -379,16 +378,12 @@ class _TranslatorState extends State<Translator> {
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(color: Color(0xff302D41))),
-
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: Color(0xffD9E0EE), width: 2.0),
               ),
-
-              //hintText: "translate from human",
               fillColor: Color(0xff302D41),
               filled: true,
-
               suffixIcon: Container(
                 margin: EdgeInsets.only(right: 10, top: 80),
                 width: 50,
